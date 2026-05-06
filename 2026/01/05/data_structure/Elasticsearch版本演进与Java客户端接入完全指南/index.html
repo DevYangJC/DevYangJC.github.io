@@ -1,0 +1,648 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Elasticsearch 版本演进 | 银时的小酒屋</title><meta name="keywords" content="Elasticsearch,Java,中间件"><meta name="author" content="Alix"><meta name="copyright" content="Alix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="关于chatGPT的学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elasticsearch 版本演进">
+<meta property="og:url" content="http://example.com/2026/01/05/data_structure/Elasticsearch%E7%89%88%E6%9C%AC%E6%BC%94%E8%BF%9B%E4%B8%8EJava%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8E%A5%E5%85%A5%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="银时的小酒屋">
+<meta property="og:description" content="关于chatGPT的学习">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/assetse/y15.jpg">
+<meta property="article:published_time" content="2026-01-05T01:45:37.000Z">
+<meta property="article:modified_time" content="2026-05-06T07:39:14.234Z">
+<meta property="article:author" content="Alix">
+<meta property="article:tag" content="Elasticsearch">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="中间件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/assetse/y15.jpg"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/923584731/picgoPicture/img//touxiang.png"><link rel="canonical" href="http://example.com/2026/01/05/data_structure/Elasticsearch%E7%89%88%E6%9C%AC%E6%BC%94%E8%BF%9B%E4%B8%8EJava%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8E%A5%E5%85%A5%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Elasticsearch 版本演进',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-05-06 15:39:14'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zyoushuo/Blog@latest/hexo/css/loading_style_1.css" ><link rel="stylesheet" href="/css/universe.css"><link rel="stylesheet" href="/self/Kimbiedark.css"><meta name="generator" content="Hexo 6.2.0"><link rel="alternate" href="/atom.xml" title="银时的小酒屋" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/923584731/picgoPicture/img//touxiang.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/playlist/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-video"></i><span> 番剧</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/assetse/y15.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">银时的小酒屋</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/playlist/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-video"></i><span> 番剧</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Elasticsearch 版本演进</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-01-05T01:45:37.000Z" title="发表于 2026-01-05 09:45:37">2026-01-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-06T07:39:14.234Z" title="更新于 2026-05-06 15:39:14">2026-05-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Elasticsearch/">Elasticsearch</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>16分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Elasticsearch 版本演进"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Elasticsearch-版本演进"><a href="#Elasticsearch-版本演进" class="headerlink" title="Elasticsearch 版本演进"></a>Elasticsearch 版本演进</h1><blockquote>
+<p>[!info] 数据来源<br>本文参考 Elasticsearch 官方文档（Elasticsearch 7.x Reference、8.x Reference、9.x Release Notes）及 <code>elastic/elasticsearch-java</code> 官方仓库。客户端 API 示例代码来源为官方文档的 Context7 实时索引。</p>
+</blockquote>
+<hr>
+<h2 id="一、版本演进全景图"><a href="#一、版本演进全景图" class="headerlink" title="一、版本演进全景图"></a>一、版本演进全景图</h2><table>
+<thead>
+<tr>
+<th>版本</th>
+<th>发布时间</th>
+<th>Java 客户端</th>
+<th>重大变化</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0.90.x</td>
+<td>2013</td>
+<td><code>org.elasticsearch:elasticsearch:0.90.x</code></td>
+<td>早期节点客户端（Node Client）</td>
+</tr>
+<tr>
+<td>1.x</td>
+<td>2014</td>
+<td>TransportClient 兴起</td>
+<td>支持 gateway、discovery</td>
+</tr>
+<tr>
+<td>2.x</td>
+<td>2015</td>
+<td>TransportClient + Jest</td>
+<td>移除 “groovy”lang scripting</td>
+</tr>
+<tr>
+<td>5.x</td>
+<td>2016</td>
+<td>TransportClient + Low-level REST Client</td>
+<td>Ingest Node、Painless Scripting</td>
+</tr>
+<tr>
+<td>6.x</td>
+<td>2017</td>
+<td>TransportClient 完善 + REST Client</td>
+<td>稀疏字段支持、Index Sorting、跨集群搜索CCR</td>
+</tr>
+<tr>
+<td>7.x</td>
+<td>2019</td>
+<td><strong>HighLevelRestClient</strong> + TransportClient（deprecated）</td>
+<td>移除了 types、革兰茨集群协调、JDK 11 内置</td>
+</tr>
+<tr>
+<td>8.x</td>
+<td>2022</td>
+<td><strong>全新 Java Client</strong>（<code>co.elastic.clients</code>）</td>
+<td>TransportClient 完全移除、类型安全 API</td>
+</tr>
+<tr>
+<td>9.x</td>
+<td>2024</td>
+<td><code>co.elastic.clients:elasticsearch-java:9.x</code></td>
+<td><strong>强制 Java 17+</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="二、各版本详细解析"><a href="#二、各版本详细解析" class="headerlink" title="二、各版本详细解析"></a>二、各版本详细解析</h2><h3 id="2-1-Elasticsearch-2-x-——-规范化时代的起点"><a href="#2-1-Elasticsearch-2-x-——-规范化时代的起点" class="headerlink" title="2.1 Elasticsearch 2.x —— 规范化时代的起点"></a>2.1 Elasticsearch 2.x —— 规范化时代的起点</h3><p><strong>客户端选择</strong>：TransportClient（通过 9300 端口，传输协议通信）</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Maven --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>transport<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.6.16<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  <span class="comment">&lt;!-- 5.x 最后兼容 2.x 集群的版本 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>[!warning] 版本陷阱<br>Transport Client 5.x 版本使用 <strong>序列化的内部协议</strong>，与 2.x 集群不兼容。如需连接 2.x 集群，请使用 <code>org.elasticsearch:elasticsearch:2.4.6</code> 配合对应版本的 Transport Client。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.elasticsearch.transport.client.PreBuiltTransportClient;</span><br><span class="line"><span class="keyword">import</span> org.elasticsearch.common.settings.Settings;</span><br><span class="line"><span class="keyword">import</span> org.elasticsearch.transport.client.TransportClient;</span><br><span class="line"><span class="keyword">import</span> org.elasticsearch.common.transport.InetSocketTransportAddress;</span><br><span class="line"></span><br><span class="line"><span class="type">TransportClient</span> <span class="variable">transportClient</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PreBuiltTransportClient</span>(Settings.EMPTY)</span><br><span class="line">    .addTransportAddress(<span class="keyword">new</span> <span class="title class_">InetSocketTransportAddress</span>(</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">InetSocketAddress</span>(<span class="string">&quot;localhost&quot;</span>, <span class="number">9300</span>)</span><br><span class="line">    ));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 查询</span></span><br><span class="line"><span class="type">SearchResponse</span> <span class="variable">response</span> <span class="operator">=</span> transportClient.prepareSearch(<span class="string">&quot;my_index&quot;</span>)</span><br><span class="line">    .setQuery(QueryBuilders.matchQuery(<span class="string">&quot;title&quot;</span>, <span class="string">&quot;elasticsearch&quot;</span>))</span><br><span class="line">    .setSize(<span class="number">10</span>)</span><br><span class="line">    .get();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用完毕后手动关闭</span></span><br><span class="line">transportClient.close();</span><br></pre></td></tr></table></figure>
+
+<p><strong>核心特性</strong>：</p>
+<ul>
+<li>支持 Groovy、Python、JavaScript 等脚本语言（后因安全问题移除）</li>
+<li><code>DELETE /&#123;index&#125;/&#123;type&#125;/&#123;id&#125;</code> 格式的三段式 API</li>
+</ul>
+<hr>
+<h3 id="2-2-Elasticsearch-5-x-——-REST-Client-的诞生"><a href="#2-2-Elasticsearch-5-x-——-REST-Client-的诞生" class="headerlink" title="2.2 Elasticsearch 5.x —— REST Client 的诞生"></a>2.2 Elasticsearch 5.x —— REST Client 的诞生</h3><p><strong>重大变化</strong>：</p>
+<ul>
+<li>Ingest Node（数据预处理管道）</li>
+<li>Painless Scripting（替代 Groovy，安全性大幅提升）</li>
+<li>BWC索引格式（不再兼容 2.x 索引）</li>
+<li>新特性：<code>join</code> 字段类型、<code>wildcard</code> 字段类型</li>
+</ul>
+<p><strong>客户端演进</strong>：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 低级别 REST Client（跨版本可用，兼容 ES 5.x ~ 7.x 集群） --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch-rest-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.6.16<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.elasticsearch.client.RestClient;</span><br><span class="line"><span class="keyword">import</span> org.elasticsearch.client.RestHighLevelClient;  <span class="comment">// ES 6.3+ 才有</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 低级别 REST Client</span></span><br><span class="line"><span class="type">RestClient</span> <span class="variable">restClient</span> <span class="operator">=</span> RestClient.builder(</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">HttpHost</span>(<span class="string">&quot;localhost&quot;</span>, <span class="number">9200</span>, <span class="string">&quot;http&quot;</span>),</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">HttpHost</span>(<span class="string">&quot;localhost&quot;</span>, <span class="number">9201</span>, <span class="string">&quot;http&quot;</span>)</span><br><span class="line">).build();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 查询示例（手动构建 JSON）</span></span><br><span class="line">Map&lt;String, String&gt; params = Collections.singletonMap(<span class="string">&quot;pretty&quot;</span>, <span class="string">&quot;true&quot;</span>);</span><br><span class="line"><span class="type">Response</span> <span class="variable">response</span> <span class="operator">=</span> restClient.performRequest(<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;/my_index/_search&quot;</span>, params);</span><br><span class="line">System.out.println(EntityUtils.toString(response.getEntity()));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 关闭</span></span><br><span class="line">restClient.close();</span><br></pre></td></tr></table></figure>
+
+<p><strong>特性</strong>：低级别 REST Client 只负责 HTTP 通信，不解析响应，<strong>无任何领域知识</strong>，可连接任意版本的 ES 集群。</p>
+<hr>
+<h3 id="2-3-Elasticsearch-6-x-——-HighLevelRestClient-登场"><a href="#2-3-Elasticsearch-6-x-——-HighLevelRestClient-登场" class="headerlink" title="2.3 Elasticsearch 6.x —— HighLevelRestClient 登场"></a>2.3 Elasticsearch 6.x —— HighLevelRestClient 登场</h3><p><strong>重大变化</strong>：</p>
+<ul>
+<li>移除了 <code>index</code>、<code>delete</code>、<code>bulk</code> API 中的 <code>content-type</code> 类型映射（<code>&#123;type&#125;</code> 路径参数废弃）</li>
+<li>Index Sorting（索引内字段排序）</li>
+<li>Cross-Cluster Search（CCS）和 Cross-Cluster Replication（CCR）正式发布</li>
+<li>稀疏字段（<code>sparse_vector</code> field type）</li>
+</ul>
+<p><strong>HighLevelRestClient（Maven）</strong>：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch-rest-high-level-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>6.8.24<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  <span class="comment">&lt;!-- 6.x 最后一个版本，连接 6.x 集群 --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch-rest-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>6.8.24<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>[!tip] 版本对应关系<br><strong>HighLevelRestClient 7.17.x</strong> 版本可以连接 <strong>7.x 集群</strong>。客户端版本号与集群版本号对齐。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.elasticsearch.client.RestHighLevelClient;</span><br><span class="line"><span class="keyword">import</span> org.elasticsearch.client.Request;</span><br><span class="line"><span class="keyword">import</span> org.elasticsearch.client.Response;</span><br><span class="line"><span class="keyword">import</span> org.elasticsearch.action.search.SearchRequest;</span><br><span class="line"><span class="keyword">import</span> org.elasticsearch.action.search.SearchResponse;</span><br><span class="line"><span class="keyword">import</span> org.elasticsearch.index.query.QueryBuilders;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化（ES 6.x）</span></span><br><span class="line"><span class="type">RestHighLevelClient</span> <span class="variable">client</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RestHighLevelClient</span>(</span><br><span class="line">    RestClient.builder(</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">HttpHost</span>(<span class="string">&quot;localhost&quot;</span>, <span class="number">9200</span>, <span class="string">&quot;http&quot;</span>),</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">HttpHost</span>(<span class="string">&quot;localhost&quot;</span>, <span class="number">9201</span>, <span class="string">&quot;http&quot;</span>)</span><br><span class="line">    )</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 同步查询（ES 6.x 方式）</span></span><br><span class="line"><span class="type">SearchRequest</span> <span class="variable">searchRequest</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SearchRequest</span>(<span class="string">&quot;my_index&quot;</span>);</span><br><span class="line">searchRequest.source(SearchSourceBuilderBuilder</span><br><span class="line">    .query(QueryBuilders.matchQuery(<span class="string">&quot;title&quot;</span>, <span class="string">&quot;elasticsearch&quot;</span>))</span><br><span class="line">);</span><br><span class="line">searchRequest.size(<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">SearchResponse</span> <span class="variable">response</span> <span class="operator">=</span> client.search(searchRequest, RequestOptions.DEFAULT);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 遍历结果</span></span><br><span class="line"><span class="keyword">for</span> (SearchHit hit : response.getHits().getHits()) &#123;</span><br><span class="line">    System.out.println(hit.getSourceAsString());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 异步查询</span></span><br><span class="line">client.searchAsync(searchRequest, RequestOptions.DEFAULT, </span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">ActionListener</span>&lt;SearchResponse&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onResponse</span><span class="params">(SearchResponse response)</span> &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(Exception e)</span> &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 关闭</span></span><br><span class="line">client.close();</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-4-Elasticsearch-7-x-——-Type-消亡与-TransportClient-废弃"><a href="#2-4-Elasticsearch-7-x-——-Type-消亡与-TransportClient-废弃" class="headerlink" title="2.4 Elasticsearch 7.x —— Type 消亡与 TransportClient 废弃"></a>2.4 Elasticsearch 7.x —— Type 消亡与 TransportClient 废弃</h3><p><strong>最重大的变化</strong>：</p>
+<ol>
+<li><strong>移除了 Type</strong>：索引从 <code>&#123;index&#125;/&#123;type&#125;/&#123;id&#125;</code> 变成了 <code>&#123;index&#125;/_doc/&#123;id&#125;</code>，一个索引只能有一种 mapping type</li>
+<li><strong>革兰茨集群协调</strong>（Cluster coordination）：移除了 <code>minimum_master_nodes</code>，使用革兰茨法定人数算法</li>
+<li><strong>JDK 11 内置</strong>：ES 7.x 自带 OpenJDK 11，不再依赖系统 JDK</li>
+<li><strong>HighLevelRestClient 正式登场</strong>（基于 REST Client，提供了领域对象封装）</li>
+<li><strong>Search Templates</strong>：更优雅的搜索模板管理</li>
+</ol>
+<p><strong>HighLevelRestClient 7.17.x（Maven）</strong>：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- ES 7.x 推荐版本：7.17.x（7.x 最后一个 LTS 子版本） --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch-rest-high-level-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>7.17.16<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch-rest-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>7.17.16<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.elasticsearch.client.RestHighLevelClient;</span><br><span class="line"><span class="keyword">import</span> org.elasticsearch.client.RequestOptions;</span><br><span class="line"><span class="keyword">import</span> org.elasticsearch.client.core.MainResponse;</span><br><span class="line"><span class="keyword">import</span> org.elasticsearch.index.query.QueryBuilders;</span><br><span class="line"><span class="keyword">import</span> org.elasticsearch.search.builder.SearchSourceBuilder;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化（ES 7.x - HighLevelRestClient）</span></span><br><span class="line"><span class="type">RestHighLevelClient</span> <span class="variable">client</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RestHighLevelClient</span>(</span><br><span class="line">    RestClient.builder(</span><br><span class="line">        <span class="string">&quot;http://localhost:9200&quot;</span>,</span><br><span class="line">        <span class="string">&quot;http://localhost:9201&quot;</span></span><br><span class="line">    )</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取集群信息</span></span><br><span class="line"><span class="type">MainResponse</span> <span class="variable">info</span> <span class="operator">=</span> client.info(RequestOptions.DEFAULT);</span><br><span class="line">System.out.println(<span class="string">&quot;集群名: &quot;</span> + info.getClusterName());</span><br><span class="line">System.out.println(<span class="string">&quot;ES版本: &quot;</span> + info.getVersion().getNumber());</span><br><span class="line"></span><br><span class="line"><span class="comment">// === 索引操作 ===</span></span><br><span class="line"><span class="comment">// 创建索引</span></span><br><span class="line">client.indices().create(</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">CreateIndexRequest</span>(<span class="string">&quot;my_index&quot;</span>),</span><br><span class="line">    RequestOptions.DEFAULT</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// === 文档操作 ===</span></span><br><span class="line"><span class="comment">// 单条写入</span></span><br><span class="line"><span class="type">IndexRequest</span> <span class="variable">request</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">IndexRequest</span>(<span class="string">&quot;my_index&quot;</span>);</span><br><span class="line">request.id(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">request.source(</span><br><span class="line">    <span class="string">&quot;user&quot;</span>, <span class="string">&quot;kimchy&quot;</span>,</span><br><span class="line">    <span class="string">&quot;message&quot;</span>, <span class="string">&quot;trying out Elasticsearch&quot;</span>,</span><br><span class="line">    <span class="string">&quot;date&quot;</span>, LocalDate.now().toString()</span><br><span class="line">);</span><br><span class="line"><span class="type">IndexResponse</span> <span class="variable">response</span> <span class="operator">=</span> client.index(request, RequestOptions.DEFAULT);</span><br><span class="line"></span><br><span class="line"><span class="comment">// === 批量写入 ===</span></span><br><span class="line"><span class="type">BulkRequest</span> <span class="variable">bulkRequest</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BulkRequest</span>();</span><br><span class="line">bulkRequest.add(<span class="keyword">new</span> <span class="title class_">IndexRequest</span>(<span class="string">&quot;my_index&quot;</span>).id(<span class="string">&quot;2&quot;</span>).source(<span class="string">&quot;user&quot;</span>, <span class="string">&quot;test&quot;</span>, <span class="string">&quot;message&quot;</span>, <span class="string">&quot;bulk demo&quot;</span>));</span><br><span class="line">bulkRequest.add(<span class="keyword">new</span> <span class="title class_">IndexRequest</span>(<span class="string">&quot;my_index&quot;</span>).id(<span class="string">&quot;3&quot;</span>).source(<span class="string">&quot;user&quot;</span>, <span class="string">&quot;dev&quot;</span>, <span class="string">&quot;message&quot;</span>, <span class="string">&quot;another doc&quot;</span>));</span><br><span class="line"><span class="type">BulkResponse</span> <span class="variable">bulkResponse</span> <span class="operator">=</span> client.bulk(bulkRequest, RequestOptions.DEFAULT);</span><br><span class="line"></span><br><span class="line"><span class="comment">// === 查询 ===</span></span><br><span class="line"><span class="type">SearchRequest</span> <span class="variable">searchRequest</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SearchRequest</span>(<span class="string">&quot;my_index&quot;</span>);</span><br><span class="line"><span class="type">SearchSourceBuilder</span> <span class="variable">sourceBuilder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SearchSourceBuilder</span>();</span><br><span class="line">sourceBuilder.query(QueryBuilders.matchQuery(<span class="string">&quot;message&quot;</span>, <span class="string">&quot;Elasticsearch&quot;</span>));</span><br><span class="line">sourceBuilder.from(<span class="number">0</span>).size(<span class="number">10</span>);</span><br><span class="line">searchRequest.source(sourceBuilder);</span><br><span class="line"></span><br><span class="line"><span class="type">SearchResponse</span> <span class="variable">searchResponse</span> <span class="operator">=</span> client.search(searchRequest, RequestOptions.DEFAULT);</span><br><span class="line">System.out.println(<span class="string">&quot;命中: &quot;</span> + searchResponse.getHits().getTotalHits());</span><br><span class="line">Arrays.stream(searchResponse.getHits().getHits())</span><br><span class="line">    .forEach(hit -&gt; System.out.println(hit.getSourceAsMap()));</span><br><span class="line"></span><br><span class="line"><span class="comment">// === 聚合查询 ===</span></span><br><span class="line">sourceBuilder.aggregation(</span><br><span class="line">    AggregationBuilders.terms(<span class="string">&quot;top_users&quot;</span>).field(<span class="string">&quot;user.keyword&quot;</span>).size(<span class="number">5</span>)</span><br><span class="line">);</span><br><span class="line">searchRequest.source(sourceBuilder);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 关闭</span></span><br><span class="line">client.close();</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>[!warning] TransportClient 被标记为 deprecated<br><strong>ES 7.15 起</strong>，<code>TransportClient</code> 正式被标记为废弃（<code>@Deprecated</code>），官方推荐迁移到 HighLevelRestClient。ES <strong>8.x 完全移除了 TransportClient</strong>。</p>
+</blockquote>
+<hr>
+<h3 id="2-5-Elasticsearch-8-x-——-全新-Java-Client（颠覆性重写）"><a href="#2-5-Elasticsearch-8-x-——-全新-Java-Client（颠覆性重写）" class="headerlink" title="2.5 Elasticsearch 8.x —— 全新 Java Client（颠覆性重写）"></a>2.5 Elasticsearch 8.x —— 全新 Java Client（颠覆性重写）</h3><p><strong>重大变化</strong>：</p>
+<ol>
+<li><p><strong>全新 Java Client（<code>co.elastic.clients:elasticsearch-java</code>）</strong>：</p>
+<ul>
+<li>完全重写，API 设计与 REST Client 完全不同</li>
+<li>强类型 API（strongly-typed），编译期类型安全</li>
+<li>使用 Builder 模式替代构造函数链</li>
+<li><strong>移除了 TransportClient</strong></li>
+<li><strong>移除了 HighLevelRestClient</strong></li>
+</ul>
+</li>
+<li><p><strong>默认开启安全</strong>：HTTPS 强制启用，TLS 证书验证默认开启</p>
+</li>
+<li><p><strong>Rollup API 正式发布</strong>：时序数据聚合</p>
+</li>
+<li><p><strong>Searchable Snapshots</strong>：可搜索快照</p>
+</li>
+<li><p>**强制 Java 17+**（部分功能）</p>
+</li>
+</ol>
+<p><strong>新 Java Client 8.x（Maven）</strong>：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- ES 8.x 全新官方 Java 客户端 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>co.elastic.clients<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>8.15.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 必须依赖：底层 HTTP 客户端 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch-rest-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>8.15.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 可选：JSON 序列化支持（Jackson 或 EPL） --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-databind<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.17.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>[!tip] 版本兼容性规则（官方定义）<br>Java Client <strong>向前兼容</strong>（forward compatible）：8.12 客户端可以连接 8.12、8.13、8.14…… 等于或更高的 ES 集群。但 8.12 客户端<strong>不支持</strong> 8.13 集群新增的功能特性，需要升级客户端版本才能使用。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> co.elastic.clients.elasticsearch.ElasticsearchClient;</span><br><span class="line"><span class="keyword">import</span> co.elastic.clients.json.jackson.JacksonJsonpMapper;</span><br><span class="line"><span class="keyword">import</span> co.elastic.clients.transport.ElasticsearchTransport;</span><br><span class="line"><span class="keyword">import</span> co.elastic.clients.transport.rest_client.RestClientTransport;</span><br><span class="line"><span class="keyword">import</span> co.elastic.clients.api.security.ApiKey;</span><br><span class="line"></span><br><span class="line"><span class="comment">// === 初始化（ES 8.x - 全新 API） ===</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 方式一：Basic Auth + TLS</span></span><br><span class="line"><span class="type">ElasticsearchClient</span> <span class="variable">client</span> <span class="operator">=</span> ElasticsearchClient.of(b -&gt; b</span><br><span class="line">    .host(<span class="string">&quot;https://localhost:9200&quot;</span>)</span><br><span class="line">    .usernameAndPassword(<span class="string">&quot;elastic&quot;</span>, <span class="string">&quot;password&quot;</span>)</span><br><span class="line">    .sslContext(sslContext)  <span class="comment">// 需要配置 TLS</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方式二：API Key（推荐用于生产）</span></span><br><span class="line"><span class="type">ElasticsearchClient</span> <span class="variable">client</span> <span class="operator">=</span> ElasticsearchClient.of(b -&gt; b</span><br><span class="line">    .host(<span class="string">&quot;https://localhost:9200&quot;</span>)</span><br><span class="line">    .apiKey(<span class="string">&quot;VnVhQ2ZHY0JDZGJrU...&quot;</span>)  <span class="comment">// 从 Kibana 获取</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方式三：使用 RestClientTransport（完整控制）</span></span><br><span class="line"><span class="type">RestClient</span> <span class="variable">restClient</span> <span class="operator">=</span> RestClient.builder(</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">HttpHost</span>(<span class="string">&quot;localhost&quot;</span>, <span class="number">9200</span>, <span class="string">&quot;https&quot;</span>)</span><br><span class="line">).build();</span><br><span class="line"></span><br><span class="line"><span class="type">ElasticsearchTransport</span> <span class="variable">transport</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RestClientTransport</span>(</span><br><span class="line">    restClient, <span class="keyword">new</span> <span class="title class_">JacksonJsonpMapper</span>()</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="type">ElasticsearchClient</span> <span class="variable">esClient</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ElasticsearchClient</span>(transport);</span><br><span class="line"></span><br><span class="line"><span class="comment">// === 索引操作 ===</span></span><br><span class="line">esClient.indices().create(c -&gt; c.index(<span class="string">&quot;my_index&quot;</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// === 文档操作 ===</span></span><br><span class="line"><span class="comment">// 写入</span></span><br><span class="line">esClient.index(i -&gt; i</span><br><span class="line">    .index(<span class="string">&quot;my_index&quot;</span>)</span><br><span class="line">    .id(<span class="string">&quot;1&quot;</span>)</span><br><span class="line">    .document(<span class="keyword">new</span> <span class="title class_">User</span>(<span class="string">&quot;kimchy&quot;</span>, <span class="string">&quot;trying out Elasticsearch&quot;</span>, LocalDate.now()))</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 批量写入</span></span><br><span class="line"><span class="type">BulkOperation</span> <span class="variable">op1</span> <span class="operator">=</span> BulkOperation.of(b -&gt; b</span><br><span class="line">    .index(i -&gt; i.index(<span class="string">&quot;my_index&quot;</span>).id(<span class="string">&quot;2&quot;</span>).document(<span class="keyword">new</span> <span class="title class_">User</span>(<span class="string">&quot;test&quot;</span>, <span class="string">&quot;bulk doc&quot;</span>, LocalDate.now())))</span><br><span class="line">);</span><br><span class="line"><span class="type">BulkOperation</span> <span class="variable">op2</span> <span class="operator">=</span> BulkOperation.of(b -&gt; b</span><br><span class="line">    .index(i -&gt; i.index(<span class="string">&quot;my_index&quot;</span>).id(<span class="string">&quot;3&quot;</span>).document(<span class="keyword">new</span> <span class="title class_">User</span>(<span class="string">&quot;dev&quot;</span>, <span class="string">&quot;another doc&quot;</span>, LocalDate.now())))</span><br><span class="line">);</span><br><span class="line"><span class="type">BulkResponse</span> <span class="variable">bulk</span> <span class="operator">=</span> esClient.bulk(b -&gt; b.operations(op1, op2));</span><br><span class="line"></span><br><span class="line"><span class="comment">// === 查询（Lambda 语法，强类型） ===</span></span><br><span class="line">SearchResponse&lt;User&gt; response = esClient.search(s -&gt; s</span><br><span class="line">    .index(<span class="string">&quot;my_index&quot;</span>)</span><br><span class="line">    .query(q -&gt; q</span><br><span class="line">        .match(m -&gt; m.field(<span class="string">&quot;message&quot;</span>).query(<span class="string">&quot;Elasticsearch&quot;</span>))</span><br><span class="line">    )</span><br><span class="line">    .size(<span class="number">10</span>),</span><br><span class="line">    User.class</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 遍历结果</span></span><br><span class="line"><span class="keyword">for</span> (Hit&lt;User&gt; hit : response.hits().hits()) &#123;</span><br><span class="line">    <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> hit.source();</span><br><span class="line">    System.out.println(user.user() + <span class="string">&quot;: &quot;</span> + user.message());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// === 聚合查询 ===</span></span><br><span class="line">SearchResponse&lt;Void&gt; aggResponse = esClient.search(s -&gt; s</span><br><span class="line">    .index(<span class="string">&quot;my_index&quot;</span>)</span><br><span class="line">    .size(<span class="number">0</span>)</span><br><span class="line">    .aggregations(<span class="string">&quot;top_users&quot;</span>, a -&gt; a</span><br><span class="line">        .terms(t -&gt; t.field(<span class="string">&quot;user.keyword&quot;</span>).size(<span class="number">5</span>))</span><br><span class="line">    ),</span><br><span class="line">    Void.class</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="type">TermsAggregate</span> <span class="variable">topUsers</span> <span class="operator">=</span> aggResponse.aggregations().get(<span class="string">&quot;top_users&quot;</span>).sterms();</span><br><span class="line">topUsers.buckets().array().forEach(bucket -&gt;</span><br><span class="line">    System.out.println(bucket.key().stringValue() + <span class="string">&quot;: &quot;</span> + bucket.docCount())</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 关闭</span></span><br><span class="line">esClient.close();</span><br><span class="line">restClient.close();</span><br><span class="line"></span><br><span class="line"><span class="comment">// User record 类定义</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">record</span> <span class="title class_">User</span><span class="params">(String user, String message, LocalDate date)</span> &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-6-Elasticsearch-9-x-——-Java-17-强制时代"><a href="#2-6-Elasticsearch-9-x-——-Java-17-强制时代" class="headerlink" title="2.6 Elasticsearch 9.x —— Java 17 强制时代"></a>2.6 Elasticsearch 9.x —— Java 17 强制时代</h3><p><strong>重大变化</strong>：</p>
+<ol>
+<li>**强制 Java 17+**（项目必须从 JDK 8&#x2F;11 升级）</li>
+<li><strong>移除了旧版 RestClient</strong>（<code>org.elasticsearch.client:elasticsearch-rest-client</code> 不再维护）</li>
+<li><strong>最小支持 ES 集群版本：7.x</strong></li>
+<li><strong>移除了 deprecated API</strong>：部分 8.x 中标记为废弃的功能被清理</li>
+</ol>
+<p><strong>ES 9.x Java Client（Maven）</strong>：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>co.elastic.clients<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>9.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch-rest-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>9.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>[!warning] ES 9.x 迁移注意事项<br>ES 9.x 的客户端包名虽然仍是 <code>co.elastic.clients:elasticsearch-java</code>，但 <strong>API 有 break change</strong>：</p>
+<ul>
+<li>部分方法的参数签名发生了变化</li>
+<li>需要重新阅读官方迁移指南</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="三、客户端版本选择对照表"><a href="#三、客户端版本选择对照表" class="headerlink" title="三、客户端版本选择对照表"></a>三、客户端版本选择对照表</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────┬──────────────────────────────┬──────────────────────────────┬─────────────────┐</span><br><span class="line">│  集群版本   │  推荐客户端                   │  Maven GroupId              │  是否推荐        │</span><br><span class="line">├─────────────┼──────────────────────────────┼──────────────────────────────┼─────────────────┤</span><br><span class="line">│  ES 6.x     │  HighLevelRestClient 6.8.x   │  org.elasticsearch.client    │  ❌ 已停止维护   │</span><br><span class="line">│  ES 7.x     │  HighLevelRestClient 7.17.x  │  org.elasticsearch.client    │  ⚠️  过渡期使用  │</span><br><span class="line">│  ES 8.x     │  Java Client 8.x             │  co.elastic.clients         │  ✅  当前主流    │</span><br><span class="line">│  ES 9.x     │  Java Client 9.x             │  co.elastic.clients         │  ✅  最新推荐    │</span><br><span class="line">└─────────────┴──────────────────────────────┴──────────────────────────────┴─────────────────┘</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>[!tip] 客户端选择建议</p>
+<ul>
+<li><strong>新项目</strong>：直接使用 <strong>ES 8.x 集群 + Java Client 8.x</strong></li>
+<li><strong>存量项目</strong>：从 HighLevelRestClient 7.17 逐步迁移到 Java Client 8.x</li>
+<li><strong>切忌</strong>：不要混用客户端版本和集群版本，如 7.x 集群不要用 8.x 的 HighLevelRestClient</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="四、核心-API-一览"><a href="#四、核心-API-一览" class="headerlink" title="四、核心 API 一览"></a>四、核心 API 一览</h2><h3 id="4-1-文档-CRUD"><a href="#4-1-文档-CRUD" class="headerlink" title="4.1 文档 CRUD"></a>4.1 文档 CRUD</h3><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>ES 7.x（HighLevelRestClient）</th>
+<th>ES 8.x（全新 Java Client）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>索引文档</td>
+<td><code>client.index(request)</code></td>
+<td><code>client.index(fn)</code></td>
+</tr>
+<tr>
+<td>批量写入</td>
+<td><code>client.bulk(request)</code></td>
+<td><code>client.bulk(fn)</code></td>
+</tr>
+<tr>
+<td>获取文档</td>
+<td><code>client.get(request)</code></td>
+<td><code>client.get(fn)</code></td>
+</tr>
+<tr>
+<td>删除文档</td>
+<td><code>client.delete(request)</code></td>
+<td><code>client.delete(fn)</code></td>
+</tr>
+<tr>
+<td>更新文档</td>
+<td><code>client.update(request)</code></td>
+<td><code>client.update(fn)</code></td>
+</tr>
+<tr>
+<td>批量读取</td>
+<td><code>client.mget(request)</code></td>
+<td><code>client.mget(fn)</code></td>
+</tr>
+</tbody></table>
+<h3 id="4-2-搜索-API"><a href="#4-2-搜索-API" class="headerlink" title="4.2 搜索 API"></a>4.2 搜索 API</h3><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>ES 7.x</th>
+<th>ES 8.x</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>全文搜索</td>
+<td><code>QueryBuilders.matchQuery()</code></td>
+<td><code>q.match(fn)</code></td>
+</tr>
+<tr>
+<td>精确匹配</td>
+<td><code>QueryBuilders.termQuery()</code></td>
+<td><code>q.term(fn)</code></td>
+</tr>
+<tr>
+<td>多条件查询</td>
+<td><code>QueryBuilders.boolQuery()</code></td>
+<td><code>q.bool(fn)</code></td>
+</tr>
+<tr>
+<td>范围查询</td>
+<td><code>QueryBuilders.rangeQuery()</code></td>
+<td><code>q.range(fn)</code></td>
+</tr>
+<tr>
+<td>高亮</td>
+<td><code>HighlightBuilder</code></td>
+<td><code>s.highlight(fn)</code></td>
+</tr>
+<tr>
+<td>聚合</td>
+<td><code>AggregationBuilders</code></td>
+<td><code>s.aggregations(fn)</code></td>
+</tr>
+<tr>
+<td>分页</td>
+<td><code>from/size</code></td>
+<td><code>s.from/s.size</code></td>
+</tr>
+</tbody></table>
+<h3 id="4-3-索引管理"><a href="#4-3-索引管理" class="headerlink" title="4.3 索引管理"></a>4.3 索引管理</h3><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>ES 7.x</th>
+<th>ES 8.x</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>创建索引</td>
+<td><code>client.indices().create()</code></td>
+<td><code>client.indices().create(fn)</code></td>
+</tr>
+<tr>
+<td>删除索引</td>
+<td><code>client.indices().delete()</code></td>
+<td><code>client.indices().delete(fn)</code></td>
+</tr>
+<tr>
+<td>刷新索引</td>
+<td><code>client.indices().refresh()</code></td>
+<td><code>client.indices().refresh(fn)</code></td>
+</tr>
+<tr>
+<td>mapping</td>
+<td><code>client.indices().putMapping()</code></td>
+<td><code>client.indices().putMapping(fn)</code></td>
+</tr>
+<tr>
+<td>别名管理</td>
+<td><code>client.indices().putAlias()</code></td>
+<td><code>client.indices().putAlias(fn)</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="五、常见问题"><a href="#五、常见问题" class="headerlink" title="五、常见问题"></a>五、常见问题</h2><h3 id="Q1：HighLevelRestClient-和全新的-Java-Client-有什么区别？"><a href="#Q1：HighLevelRestClient-和全新的-Java-Client-有什么区别？" class="headerlink" title="Q1：HighLevelRestClient 和全新的 Java Client 有什么区别？"></a>Q1：HighLevelRestClient 和全新的 Java Client 有什么区别？</h3><table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>HighLevelRestClient（7.x）</th>
+<th>全新 Java Client（8.x+）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>包名</td>
+<td><code>org.elasticsearch.client</code></td>
+<td><code>co.elastic.clients</code></td>
+</tr>
+<tr>
+<td>API 风格</td>
+<td>方法链（builder 模式）</td>
+<td><strong>Lambda Builder</strong>（函数式）</td>
+</tr>
+<tr>
+<td>类型安全</td>
+<td>基于 Map &#x2F; Object 返回</td>
+<td><strong>强类型 + 泛型</strong>，编译期校验</td>
+</tr>
+<tr>
+<td>依赖</td>
+<td>REST Client + Jackson</td>
+<td>REST Client + Jackson</td>
+</tr>
+<tr>
+<td>异步支持</td>
+<td><code>*Async</code> 方法 + <code>ActionListener</code></td>
+<td>原生 <code>CompletableFuture</code></td>
+</tr>
+<tr>
+<td>TransportClient</td>
+<td>使用</td>
+<td><strong>已移除</strong></td>
+</tr>
+</tbody></table>
+<h3 id="Q2：ES-8-x-的-REST-Client-还能用吗？"><a href="#Q2：ES-8-x-的-REST-Client-还能用吗？" class="headerlink" title="Q2：ES 8.x 的 REST Client 还能用吗？"></a>Q2：ES 8.x 的 REST Client 还能用吗？</h3><p>可以。<code>org.elasticsearch.client:elasticsearch-rest-client:8.x</code> 仍然可用（底层通信层），但 <strong>HighLevelRestClient 已完全移除</strong>。全新 Java Client 8.x 封装了 REST Client，提供更友好的 API。</p>
+<h3 id="Q3：Spring-Boot-项目如何集成？"><a href="#Q3：Spring-Boot-项目如何集成？" class="headerlink" title="Q3：Spring Boot 项目如何集成？"></a>Q3：Spring Boot 项目如何集成？</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Spring Boot 2.7.x + ES 7.x --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-elasticsearch<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.7.18<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  <span class="comment">&lt;!-- 最后支持 ES 7.x 的版本 --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Spring Boot 3.x + ES 8.x --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-elasticsearch<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.2.x<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>[!tip] Spring Boot 版本对应<br>Spring Boot <strong>2.7.x</strong> → Elasticsearch <strong>7.x</strong><br>Spring Boot <strong>3.x</strong> → Elasticsearch <strong>8.x</strong>（依赖 Spring Data Elasticsearch 5.x）</p>
+<p>注意：Spring Data Elasticsearch 版本与 ES 版本独立，维护自己的兼容矩阵。</p>
+</blockquote>
+<hr>
+<h2 id="六、版本演进总结"><a href="#六、版本演进总结" class="headerlink" title="六、版本演进总结"></a>六、版本演进总结</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">2013   ES 0.90        →  Node Client / TransportClient</span><br><span class="line">2014   ES 1.x          →  Gateway / Discovery 模块</span><br><span class="line">2015   ES 2.x          →  移除 Groovy Scripting</span><br><span class="line">2016   ES 5.x          →  Ingest Node + Painless + REST Client</span><br><span class="line">2017   ES 6.x          →  HighLevelRestClient 登场，Type 废除倒计时</span><br><span class="line">2019   ES 7.x          →  Types 彻底移除，TransportClient 废弃</span><br><span class="line">2022   ES 8.x          →  全新 Java Client，强制 HTTPS</span><br><span class="line">2024   ES 9.x          →  强制 Java 17，生态全面现代化</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/elastic/elasticsearch-java">Elasticsearch Java Client 官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/8.19">ES 8.x Reference</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.16">ES 7.x Reference</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/elastic/elasticsearch-java/blob/main/docs/release-notes/9-0-0.md">ES 9.0.0 Release Notes</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/elastic/elasticsearch-java/blob/main/docs/reference/index.md">Compatibility Policy</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Alix</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2026/01/05/data_structure/Elasticsearch%E7%89%88%E6%9C%AC%E6%BC%94%E8%BF%9B%E4%B8%8EJava%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8E%A5%E5%85%A5%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/">http://example.com/2026/01/05/data_structure/Elasticsearch%E7%89%88%E6%9C%AC%E6%BC%94%E8%BF%9B%E4%B8%8EJava%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8E%A5%E5%85%A5%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">银时的小酒屋</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Elasticsearch/">Elasticsearch</a><a class="post-meta__tags" href="/tags/Java/">Java</a><a class="post-meta__tags" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a></div><div class="post_share"><div class="social-share" data-image="/assetse/y15.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2026/05/06/AI/%E5%A4%A7%E6%A8%A1%E5%9E%8BRAG%E7%9F%A5%E8%AF%86%E5%BA%93/"><img class="prev-cover" src="/assetse/y17.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">企业级AI智能体平台</div></div></a></div><div class="next-post pull-right"><a href="/2025/11/21/data_structure/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/"><img class="next-cover" src="https://cdn.jsdelivr.net/gh/923584731/picgoPicture/img/dataStructure.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">MySQL数据库常见问题</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Valine</span><span class="switch-btn"></span><span class="second-comment">Disqus</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/923584731/picgoPicture/img//touxiang.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Alix</div><div class="author-info__description">归途也还可爱</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/923584731"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/923584731" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:923584731@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="Rss"><i class="fas fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">大鹏一日同风起,扶摇直上九万里</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Elasticsearch-%E7%89%88%E6%9C%AC%E6%BC%94%E8%BF%9B"><span class="toc-number">1.</span> <span class="toc-text">Elasticsearch 版本演进</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%89%88%E6%9C%AC%E6%BC%94%E8%BF%9B%E5%85%A8%E6%99%AF%E5%9B%BE"><span class="toc-number">1.1.</span> <span class="toc-text">一、版本演进全景图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%90%84%E7%89%88%E6%9C%AC%E8%AF%A6%E7%BB%86%E8%A7%A3%E6%9E%90"><span class="toc-number">1.2.</span> <span class="toc-text">二、各版本详细解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Elasticsearch-2-x-%E2%80%94%E2%80%94-%E8%A7%84%E8%8C%83%E5%8C%96%E6%97%B6%E4%BB%A3%E7%9A%84%E8%B5%B7%E7%82%B9"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 Elasticsearch 2.x —— 规范化时代的起点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Elasticsearch-5-x-%E2%80%94%E2%80%94-REST-Client-%E7%9A%84%E8%AF%9E%E7%94%9F"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 Elasticsearch 5.x —— REST Client 的诞生</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-Elasticsearch-6-x-%E2%80%94%E2%80%94-HighLevelRestClient-%E7%99%BB%E5%9C%BA"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 Elasticsearch 6.x —— HighLevelRestClient 登场</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-Elasticsearch-7-x-%E2%80%94%E2%80%94-Type-%E6%B6%88%E4%BA%A1%E4%B8%8E-TransportClient-%E5%BA%9F%E5%BC%83"><span class="toc-number">1.2.4.</span> <span class="toc-text">2.4 Elasticsearch 7.x —— Type 消亡与 TransportClient 废弃</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-Elasticsearch-8-x-%E2%80%94%E2%80%94-%E5%85%A8%E6%96%B0-Java-Client%EF%BC%88%E9%A2%A0%E8%A6%86%E6%80%A7%E9%87%8D%E5%86%99%EF%BC%89"><span class="toc-number">1.2.5.</span> <span class="toc-text">2.5 Elasticsearch 8.x —— 全新 Java Client（颠覆性重写）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-Elasticsearch-9-x-%E2%80%94%E2%80%94-Java-17-%E5%BC%BA%E5%88%B6%E6%97%B6%E4%BB%A3"><span class="toc-number">1.2.6.</span> <span class="toc-text">2.6 Elasticsearch 9.x —— Java 17 强制时代</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%89%88%E6%9C%AC%E9%80%89%E6%8B%A9%E5%AF%B9%E7%85%A7%E8%A1%A8"><span class="toc-number">1.3.</span> <span class="toc-text">三、客户端版本选择对照表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%A0%B8%E5%BF%83-API-%E4%B8%80%E8%A7%88"><span class="toc-number">1.4.</span> <span class="toc-text">四、核心 API 一览</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E6%96%87%E6%A1%A3-CRUD"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 文档 CRUD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E6%90%9C%E7%B4%A2-API"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 搜索 API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E7%B4%A2%E5%BC%95%E7%AE%A1%E7%90%86"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 索引管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">1.5.</span> <span class="toc-text">五、常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Q1%EF%BC%9AHighLevelRestClient-%E5%92%8C%E5%85%A8%E6%96%B0%E7%9A%84-Java-Client-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">1.5.1.</span> <span class="toc-text">Q1：HighLevelRestClient 和全新的 Java Client 有什么区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q2%EF%BC%9AES-8-x-%E7%9A%84-REST-Client-%E8%BF%98%E8%83%BD%E7%94%A8%E5%90%97%EF%BC%9F"><span class="toc-number">1.5.2.</span> <span class="toc-text">Q2：ES 8.x 的 REST Client 还能用吗？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q3%EF%BC%9ASpring-Boot-%E9%A1%B9%E7%9B%AE%E5%A6%82%E4%BD%95%E9%9B%86%E6%88%90%EF%BC%9F"><span class="toc-number">1.5.3.</span> <span class="toc-text">Q3：Spring Boot 项目如何集成？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E7%89%88%E6%9C%AC%E6%BC%94%E8%BF%9B%E6%80%BB%E7%BB%93"><span class="toc-number">1.6.</span> <span class="toc-text">六、版本演进总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.7.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/05/06/AI/%E5%A4%A7%E6%A8%A1%E5%9E%8BRAG%E7%9F%A5%E8%AF%86%E5%BA%93/" title="企业级AI智能体平台"><img src="/assetse/y17.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="企业级AI智能体平台"/></a><div class="content"><a class="title" href="/2026/05/06/AI/%E5%A4%A7%E6%A8%A1%E5%9E%8BRAG%E7%9F%A5%E8%AF%86%E5%BA%93/" title="企业级AI智能体平台">企业级AI智能体平台</a><time datetime="2026-05-06T07:40:06.443Z" title="发表于 2026-05-06 15:40:06">2026-05-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/05/data_structure/Elasticsearch%E7%89%88%E6%9C%AC%E6%BC%94%E8%BF%9B%E4%B8%8EJava%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8E%A5%E5%85%A5%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/" title="Elasticsearch 版本演进"><img src="/assetse/y15.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Elasticsearch 版本演进"/></a><div class="content"><a class="title" href="/2026/01/05/data_structure/Elasticsearch%E7%89%88%E6%9C%AC%E6%BC%94%E8%BF%9B%E4%B8%8EJava%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8E%A5%E5%85%A5%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/" title="Elasticsearch 版本演进">Elasticsearch 版本演进</a><time datetime="2026-01-05T01:45:37.000Z" title="发表于 2026-01-05 09:45:37">2026-01-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/11/21/data_structure/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" title="MySQL数据库常见问题"><img src="https://cdn.jsdelivr.net/gh/923584731/picgoPicture/img/dataStructure.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MySQL数据库常见问题"/></a><div class="content"><a class="title" href="/2025/11/21/data_structure/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" title="MySQL数据库常见问题">MySQL数据库常见问题</a><time datetime="2025-11-21T02:04:47.597Z" title="发表于 2025-11-21 10:04:47">2025-11-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/13/Design_Pattern/%E5%B7%A5%E4%BD%9C%E5%B8%B8%E7%94%A8%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="工作常用设计模式"><img src="https://cdn.jsdelivr.net/gh/923584731/picgoPicture/img/Design_Pattern.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="工作常用设计模式"/></a><div class="content"><a class="title" href="/2024/06/13/Design_Pattern/%E5%B7%A5%E4%BD%9C%E5%B8%B8%E7%94%A8%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="工作常用设计模式">工作常用设计模式</a><time datetime="2024-06-13T08:35:57.943Z" title="发表于 2024-06-13 16:35:57">2024-06-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/12/Design_Pattern/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="设计模式笔记"><img src="https://cdn.jsdelivr.net/gh/923584731/picgoPicture/img/Design_Pattern.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="设计模式笔记"/></a><div class="content"><a class="title" href="/2024/06/12/Design_Pattern/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="设计模式笔记">设计模式笔记</a><time datetime="2024-06-12T14:09:58.000Z" title="发表于 2024-06-12 22:09:58">2024-06-12</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By Alix</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script>function loadDisqus () {
+  var disqus_config = function () {
+    this.page.url = 'http://example.com/2026/01/05/data_structure/Elasticsearch%E7%89%88%E6%9C%AC%E6%BC%94%E8%BF%9B%E4%B8%8EJava%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8E%A5%E5%85%A5%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/'
+    this.page.identifier = '/2026/01/05/data_structure/Elasticsearch%E7%89%88%E6%9C%AC%E6%BC%94%E8%BF%9B%E4%B8%8EJava%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8E%A5%E5%85%A5%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/'
+    this.page.title = 'Elasticsearch 版本演进'
+  };
+
+  window.disqusReset = () => {
+    DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  if (window.DISQUS) disqusReset()
+  else {
+    (function() { 
+      var d = document, s = d.createElement('script');
+      s.src = 'https://.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  }
+
+  document.getElementById('darkmode').addEventListener('click', () => {
+    setTimeout(() => window.disqusReset(), 200)
+  })
+}
+
+if ('Valine' === 'Disqus' || !true) {
+  if (true) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+  else loadDisqus()
+} else {
+  function loadOtherComment () {
+    loadDisqus()
+  }
+}
+</script></div><canvas id="universe"></canvas><script defer src="/js/universe.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="你好,大帅哥,大美女" data-fontsize="15px" data-random="true" async="async"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":20,"vOffset":-20},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>
